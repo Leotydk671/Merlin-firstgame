@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+//---跟随血条管理：将血条UI的世界坐标转为屏幕坐标并跟随目标，并根据Cinemachine镜头的正交大小动态缩放血条大小---
 public class MovingBloodManager : MonoBehaviour
 {
+    //---Cinemachine虚拟镜头，用于读取正交大小来缩放血条---
     public CinemachineVirtualCamera CVC;
+    //---血条跟随的目标对象---
     public GameObject target; // 要跟随的目标对象
+    //---血条相对目标的世界偏移量---
     public Vector3 offset = new Vector3(0, 1.6f, 0); // 血条相对于目标的偏移量
     private Camera mainCamera;
 
+    //---初始化相机引用和Cinemachine引用，设定初始跟随位置---
     void Start()
     {
         mainCamera = Camera.main; // 获取主相机
@@ -17,6 +22,7 @@ public class MovingBloodManager : MonoBehaviour
         transform.position = target.transform.position + offset;
     }
 
+    //---每帧将目标世界坐标转为屏幕坐标更新位置，并根据镜头正交大小线性缩放血条---
     void Update()
     {
         transform.position = target.transform.position + offset;

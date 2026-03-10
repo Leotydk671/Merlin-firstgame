@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//---加载WarScene的按钮处理器：Start时注册监听，点击后加载WarScene---
 public class LoadSceneWithAddListener : MonoBehaviour
 {
-    // 引用按钮组件
+    //---触发加载场景的按钮组件---
     public Button loadSceneButton;
-    // 要加载的场景名称
+    //---目标场景名称---
     private string sceneName = "WarScene";
 
+    //---初始化：为loadSceneButton注册加载场景监听---
     void Start()
     {
         // 检查按钮引用是否为空
@@ -23,7 +25,7 @@ public class LoadSceneWithAddListener : MonoBehaviour
         }
     }
 
-    // 按钮点击时调用的方法
+    //---按钮点击回调：载入WarScene---
     void LoadScene()
     {
         // 检查场景名称是否为空

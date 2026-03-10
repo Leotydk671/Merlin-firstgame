@@ -1,6 +1,7 @@
 using UnityEngine;
 
 
+//---角色属性组件：存储血量/速度/护甲/法抗等属性的初始值和当前值，管理状态（Situation枚举），通过UpdataAll()汇总更新所有UI显示---
 public class EntityProperty : MonoBehaviour
 {
     // 属性初始值
@@ -13,12 +14,15 @@ public class EntityProperty : MonoBehaviour
     // 公有变量
     // 背景图片
     // public Image EntityBackground;
+    //---当前血量，由子弹命中时扣减---
     public float CurrentBlood;
-    //public float CurrentAttack;
+    //---当前移动速度，可受状态影响（如Frozen降速）---
     public float CurrentSpeed;
     public float CurrentFrontDefense;
     public float CurrentBehindDefense;
+    //---当前法术抗性数组（0=通用，1=火，2=水，3=风，4=土）---
     public float[] CurrentMagicDfense = new float[5];  // 法抗:火、水、风、土
+    //---角色状态枚举：共10种状态---
     public enum situation
     {
         Nothing,  // 无
@@ -32,20 +36,21 @@ public class EntityProperty : MonoBehaviour
         Fast,  // 迅捷
         Death  // 死亡
     }
+    //---当前状态和状态剩余时间的元组---
     public (situation , float) CurrentSituation;
+    //---状态持续总时长，默认2秒---
     public float SituationContinuousTime = 2.0f;
-    // public float HelpTime;
     public BarManager ShowBlood;
-    //public BarManager ShowMovingBlood;
-    //public BarManager ShowAttack;
     public BarManager ShowSpeed;
     public BarManager ShowFrontDefense;
     public BarManager ShowBehindDefense;
+    //---法抗数值UI显示组件数组---
     public ValueManager[] ShowMagicDefense = new ValueManager[5];
+    //---状态图标UI显示组件---
     public SituationManager ShowSituation;
 
 
-    // 初始化以及修改属性的函数
+    //---从CharacterStatusConfig读取初始值并设置所有属性当前值，同时设置初始状态为Nothing---
     public void Initialization(CharacterStatusConfig ConcreteInformation) 
     {
         CurrentBlood = Blood = ConcreteInformation.Blood;
@@ -58,6 +63,7 @@ public class EntityProperty : MonoBehaviour
 
     }
 
+    //---更新血条UI，血量归零时设置状态为Death---
     public void UpdateBlood() 
     {
         ShowBlood.UpdateBar(CurrentBlood);
@@ -83,6 +89,7 @@ public class EntityProperty : MonoBehaviour
         for (int i=1; i<=4; i++)
             ShowMagicDefense[i].UpdateValue(CurrentMagicDfense[i]);
     }
+    //---更新状态图标UI，状态剩余时间归零后重置速度并清除状态---
     public void UpdateSituation() 
     {
         //Sprite BackGroundSprite = EntityBackground.GetComponent<Sprite>();
@@ -116,6 +123,7 @@ public class EntityProperty : MonoBehaviour
         }
         */
     }
+    //---汇总调用所有属性的UI更新方法---
     public void UpdataAll()
     {
         UpdateBlood();

@@ -2,53 +2,64 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+//---游戏总管理器单例：负责法术槽格子管理、按气候生成敌人、Tab开背包/P暂停/按钮面板切换，以及控制IsMoving状态---
 public class GameManagerBehavior : MonoBehaviour
 {
+    //---四元素图标Sprite（火/水/土/风）---
     public Sprite[] sprites= new Sprite[4];
+    //---全局唯一实例---
     public static GameManagerBehavior gm = null; 
+    //---四元素初始数量---
     public int[] InitNum = new int[4];
-    //public Type[] types = new Type[5];
+    //---五个法术槽格子的GameObject数组---
     public static GameObject[] Boxes = new GameObject[5];
 
+    //---各格子内法术名称---
     public string[] Spell_inBoxes_withName = new string[5];
 
     public bool[] Spell_inBoxes_isBullet = new bool[5]; 
     public bool[] Spell_inBoxes_isComponent = new bool[5]; 
 
-    //public bool[] BoxStatus = new bool[5];
-    //public Image[] Images = new Image[5];
-    // Start is called before the first frame update
-
-    // control the bag
+    //---背包UI画布对象---
     public GameObject BagCanvas;
+    //---暂停UI画布对象---
     public GameObject PauseCanvas;
+    //---是否允许游戏运行（非暂停非背包状态时为true）---
     public bool IsMoving = true;
 
+    //---当前已选中的法术槽格子---
     public Boxselected Selected_box;
 
-    // the number of the enemies in the map
+    //---当前地图对应的敌人总数---
     public int NumberOfEnemy;
 
+    //---法术槽格子总数---
     public int BasicElementNum = 4;
 
+    //---法术槽总数---
     public int SpellNum = 5;
 
+    //---获取法术到格子的按钮---
     public GameObject GetButton = null;
 
+    //---将格子中法术确认装备的按钮---
     public GameObject SetButton = null;
 
     public GameObject LowImage = null;
+    //---说明文字面板UI对象---
     public GameObject InstruCanvas;
-// 用于引用按钮组件
+    // 用于引用按钮组件
     public Button toggleButton;
-// 用于记录Panel的当前显示状态
+    // 用于记录Panel的当前显示状态
     private bool isPanelVisible = false;
+    //---怪物信息面板UI对象---
     public GameObject MonsterCanvas;
-// 用于引用按钮组件
+    // 用于引用按钮组件
     public Button monsterButton;
-// 用于记录Panel的当前显示状态
+    // 用于记录Panel的当前显示状态
     private bool isMonsterVisible = false;
 
+    //---初始化单例、加载元素图标、获取敌人数量、查找格子和按钮---
     void Awake()
     {
         IsMoving = true;
@@ -69,6 +80,7 @@ public class GameManagerBehavior : MonoBehaviour
         SetTwoButtons();
     }
 
+    //---初始化默认选中格子、随机初始元素数量，按气候/难度生成敌人预制体，注册面板切换按钮监听---
     void Start()
     {
         Selected_box = Boxes[0].GetComponent<Boxselected>();
@@ -136,7 +148,7 @@ public class GameManagerBehavior : MonoBehaviour
         monsterButton.onClick.AddListener(MonsterPanel);
     }
 
-    // Update is called once per frame
+    //---每帧响应Tab键切换背包/P键切换暂停，并根据各面板显示状态更新IsMoving---
     void Update()
     {
 
@@ -156,6 +168,7 @@ public class GameManagerBehavior : MonoBehaviour
         else IsMoving = true;
     }
 
+    //---切换说明(InstruCanvas)面板的显示与隐藏---
     void TogglePanel()
     {
         // 切换Panel的显示状态
@@ -170,6 +183,7 @@ public class GameManagerBehavior : MonoBehaviour
         // 根据新的状态设置Panel的激活状态
         //panel.SetActive(isPanelVisible);
     }
+    //---切换怪物信息(MonsterCanvas)面板的显示与隐藏---
     void MonsterPanel()
     {
         // 切换Panel的显示状态
@@ -184,6 +198,7 @@ public class GameManagerBehavior : MonoBehaviour
         // 根据新的状态设置Panel的激活状态
         //panel.SetActive(isPanelVisible);
     }
+    //---在BagCanvas/Panel/AnOBject下查找box0~box4并存入静态Boxes数组---
     void Setthoseboxes()
     {
         if(BagCanvas == null)
@@ -201,6 +216,7 @@ public class GameManagerBehavior : MonoBehaviour
         }
     }
 
+    //---在BagCanvas/Panel下查找GetButton/SetButton/ImageLow并缓存其引用---
     void SetTwoButtons()
     {
         if(BagCanvas == null)
@@ -225,6 +241,7 @@ public class GameManagerBehavior : MonoBehaviour
     }
 
 
+    //---清除指定格子的IsBullet/IsComponent/SpellType状态，使其回到空槽---
     public void ClearTheBox(Boxselected box)
     {
         box.IsBulllet = false;

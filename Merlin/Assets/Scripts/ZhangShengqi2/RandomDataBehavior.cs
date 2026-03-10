@@ -4,17 +4,25 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//---随机数据选择器：随机从所有StartData SO中抖10个展示供玩家选择，所选数据累加到savedData后载入TransferScene---
 public class RandomDataBehavior : MonoBehaviour
 {
+    //---所有可选的StartData ScriptableObject实例数组---
     public StartData[] allData; // 存储所有可脚本化对象实例的数组
+    //---展示选中数据的文本组件数组（每3个选项各占942素共12个）---
     public TextMeshProUGUI[] text = new TextMeshProUGUI[12];
+    //---当前随机选取的3个StartData实例列表---
     private List<StartData> selectedData = new List<StartData>(); // 存储随机选取的3个实例
+    //---全局静态元素数量数组，默认各元素初始2，由玩家选择累加---
     public static int[] savedData = {2,2,2,2}; // 公有的静态整数数组
-
+    //---三个选择按钮---
     public Button[] buttons; // 三个按钮
+    //---更换资源按钮---
     public Button changeDataButton; // 新添加的按钮
+    //---更换资源按钮是否已被点击过---
     private bool isChangeDataButtonClicked = false; // 标记按钮是否已经被点击过
 
+    //---初始化：随机选取3个StartData并展示，注册选择按钮和更换按钮监听---
     private void Start()
     {
         // 随机选取3个实例
@@ -31,6 +39,7 @@ public class RandomDataBehavior : MonoBehaviour
         changeDataButton.onClick.AddListener(ChangeDataIfNotClicked);
     }
 
+    //---从allData中不重复地随机选取3个StartData展示到界面文本组件---
     private void SelectRandomData()
     {
         // 确保有足够的实例可供选择
@@ -69,6 +78,7 @@ public class RandomDataBehavior : MonoBehaviour
         }
     }
 
+    //---玩家点击选择按钮回调：将对应选项的元素数量累加到savedData并载入TransferScene---
     private void SaveDataToStaticArray(int buttonIndex)
     {
         if (buttonIndex < 0 || buttonIndex >= selectedData.Count)
@@ -88,6 +98,7 @@ public class RandomDataBehavior : MonoBehaviour
         Debug.Log("转换到加载界面");
     }
 
+    //---更换按钮回调：只允许点击一次，重新随机选取展示数据并禁用按钮---
     private void ChangeDataIfNotClicked()
     {
 

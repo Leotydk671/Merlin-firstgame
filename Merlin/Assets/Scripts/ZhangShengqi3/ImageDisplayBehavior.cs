@@ -3,12 +3,17 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+//---顺序过场图片播放器：依次渐入展示4张过场图，最后一张显示时按S键可跳入NewPlayerScene---
 public class SequentialImageDisplay : MonoBehaviour
 {
     // 引用四个要显示的 Image
+    //---第一张过场图---
     public Image firstImage;
+    //---第二张过场图---
     public Image secondImage;
+    //---第三张过场图---
     public Image thirdImage;
+    //---第四张过场图---
     public Image fourthImage;
 
     // 用于存储每个 Image 是否已隐藏的键名
@@ -17,14 +22,15 @@ public class SequentialImageDisplay : MonoBehaviour
     private const string thirdImageHiddenKey = "ThirdImageHidden";
     private const string fourthImageHiddenKey = "FourthImageHidden";
 
-    // 渐变持续时间
+    //---渐入持续时间（秒）---
     public float fadeDuration = 1f;
-    // 图片显示时间
+    //---单张图片展示时间（秒）---
     public float displayDuration = 1.5f;
 
-    // 要切换到的新场景名称
+    //---最终跳转目标场景名称---
     private string newSceneName = "NewPlayerScene";
 
+    //---初始化：清空PlayerPrefs，隐藏所有图片，启动第一张图片的延迟渐入协程---
     void Start()
     {
         // 清除 PlayerPrefs 数据（仅用于测试）
@@ -48,7 +54,7 @@ public class SequentialImageDisplay : MonoBehaviour
         }
     }
 
-    // 设置 Image 的透明度
+    //---设置Image透明度辅助方法---
     void SetImageAlpha(Image image, float alpha)
     {
         Color color = image.color;
@@ -56,6 +62,7 @@ public class SequentialImageDisplay : MonoBehaviour
         image.color = color;
     }
 
+    //---带延迟渐入展示第一张图片，展示完毕后自动跳转到第二张---
     IEnumerator ShowFirstImageAfterDelay(float delay)
     {
         // 等待指定的延迟时间
@@ -75,6 +82,7 @@ public class SequentialImageDisplay : MonoBehaviour
         StartCoroutine(ShowSecondImageAfterDelay(0.5f));
     }
 
+    //---带延迟渐入展示第二张图片，展示完毕后自动跳转到第三张---
     IEnumerator ShowSecondImageAfterDelay(float delay)
     {
         // 等待指定的延迟时间
@@ -94,6 +102,7 @@ public class SequentialImageDisplay : MonoBehaviour
         StartCoroutine(ShowThirdImageAfterDelay(0.5f));
     }
 
+    //---带延迟渐入展示第三张图片，展示完毕后自动跳转到第四张---
     IEnumerator ShowThirdImageAfterDelay(float delay)
     {
         // 等待指定的延迟时间
@@ -113,6 +122,7 @@ public class SequentialImageDisplay : MonoBehaviour
         StartCoroutine(ShowFourthImageAfterDelay(0.5f));
     }
 
+    //---带延迟渐入展示第四张图片，展示后等待玩家按S键---
     IEnumerator ShowFourthImageAfterDelay(float delay)
     {
         // 等待指定的延迟时间
@@ -123,6 +133,7 @@ public class SequentialImageDisplay : MonoBehaviour
         yield return StartCoroutine(FadeInImage(fourthImage));
     }
 
+    //---渐入单张图片的协程：在fadeDuration时间内任透明度从0到1---
     // 图片渐变协程
     IEnumerator FadeInImage(Image image)
     {
@@ -138,6 +149,7 @@ public class SequentialImageDisplay : MonoBehaviour
         SetImageAlpha(image, 1f);
     }
 
+    //---每帧检测第四张图片显示时玩家是否按S键，是则隐藏并跳入NewPlayerScene---
     void Update()
     {
         // 检查第四个 Image 是否显示且玩家是否按下了 S 键

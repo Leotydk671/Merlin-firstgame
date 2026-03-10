@@ -3,21 +3,28 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+//---元素法术信息面板：展示法术名称/说明/图标及元素消耗量，GetButton点击选中后SetButton可将法术装备到指定格子---
 public class ElementPanelBehavior : MonoBehaviour
 {
+    //---当前面板对应的法术ScriptableObject数据---
     public Magicscript magicscript;
     private TextMeshProUGUI textComponent; // 存储 Text 组件的引用
+    //---法术名称文本组件---
     public TextMeshProUGUI text1; 
+    //---法术说明文本组件---
     public TextMeshProUGUI text2; 
+    //---获取法术到选中格子的按钮---
     public Button GetButton = null;
-
+    //---确认将法术装备到格子的按钮---
     public Button SetButton = null;
-
+    //---当前面板是否已被选中（GetButton点击后为true）---
     public bool HasBeenCreate = false;
+    //---显示法术图标的Image组件---
     public Image eleshow = null;
 
 
 
+    //---初始化：绑定文本/图标组件，从GameManager获取GetButton/SetButton引用，显示四元素消耗数量和法术名称说明---
     void Awake()
     {
         text1 = transform.Find("ImageText/NameText").GetComponent<TextMeshProUGUI>();
@@ -42,12 +49,13 @@ public class ElementPanelBehavior : MonoBehaviour
     }
     
     
-    // Update is called once per frame
+    //---每帧更新法术图标的透明度，HasBeenCreate时完全不透明否则几乎全透明---
     void Update()
     {
         Setcolor();
     }
 
+    //---GetButton点击事件：将HasBeenCreate置true，激活SetButton允许装备法术---
     public void OnButtonClick()
     {
         HasBeenCreate = true;
@@ -67,6 +75,7 @@ public class ElementPanelBehavior : MonoBehaviour
     }
 
 
+    //---SetButton点击事件：先销毁再创建当前选中格子的ChildImage，更新格子法术类型---
     public void OnSetButtonClick()
     {
         DestroyChildImage(GameManagerBehavior.gm.Selected_box);
@@ -92,6 +101,7 @@ public class ElementPanelBehavior : MonoBehaviour
     }
 
 
+    //---在选中格子下查找并销毁名为ChildImage的子对象，同时清空格子状态---
     private void DestroyChildImage(Boxselected SelectedBox)
     {
             Transform childTransform = FindChildByName(SelectedBox.transform, "ChildImage");
@@ -101,6 +111,7 @@ public class ElementPanelBehavior : MonoBehaviour
     }
 
 
+    //---在选中格子下创建名为ChildImage的GameObject并添加Image组件，再调用SetSpriteForChildImage赋值---
     private void CreateChildImage(Boxselected SelectedBox)
     {
         // 创建一个新的 GameObject 作为子对象
@@ -121,6 +132,7 @@ public class ElementPanelBehavior : MonoBehaviour
 
 
 
+    //---设置ChildImage的Sprite，根据IsBullet/IsComponent更新格子的法术类型和SpellType字段---
     private void SetSpriteForChildImage(Image childImage, Boxselected SelectedBox)
     {
         // 为子 Image 的 sprite 属性赋值
@@ -150,6 +162,7 @@ public class ElementPanelBehavior : MonoBehaviour
 
 
 
+    //---根据HasBeenCreate更新eleshow透明度：选中时完全显示，未选中时几乎隐藏---
     void Setcolor()
     {
         if (HasBeenCreate)

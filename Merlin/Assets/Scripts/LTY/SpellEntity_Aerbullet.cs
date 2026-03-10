@@ -1,6 +1,8 @@
 using UnityEngine;
+//---风元素子弹实体：飞行速度最快，但伤害较低，不附加状态---
 public class SpellEntity_Aerbullet : SpellEntity, LogicalOperators
 {
+    //---初始化风元素子弹属性：速度、0.2（最快）、伤害、5.0（最低）---
     public SpellEntity_Aerbullet()
     {
         Sprite_Location = "Textures/Bullets/Aerbullet";
@@ -23,7 +25,7 @@ public class SpellEntity_Aerbullet : SpellEntity, LogicalOperators
     }
     //public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：根据敌人风元素抗性计算实际伤害，无状态附加，销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

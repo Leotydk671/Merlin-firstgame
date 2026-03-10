@@ -3,29 +3,43 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+//---程序化地图生成器：根据全局气候编号选择不同地形主题，使用柏林噪声生成4种气候地形（普通草地/稀疏草地/雪地/沙漠），并支持鼠标滚轮缩放Cinemachine镜头---
 public class MapGenerate : MonoBehaviour
 {
+    //---Cinemachine虚拟镜头，用于控制正交大小实现缩放---
     public CinemachineVirtualCamera CVC = null;
+    //---地图宽度（格子数）---
 	public int mapWidth;
+    //---地图高度（格子数）---
 	public int mapHeight;
+    //---噪声缩放比例，值越大地形越平缓---
 	public float noiseScale = 10f;
-    //public int m_seed;
+    //---鼠标滚轮缩放摄像机的速度---
     private float speed = 20.0f;
+    //---土地/泥土瓦片集---
     private Tile[] dirt_tile_set = new Tile[28];
+    //---草地瓦片集---
     private Tile[] grass_tile_set = new Tile[17];
+    //---水/雪/沙漠瓦片集---
     private Tile[] water_tile_set = new Tile[36];
+    //---植被/特殊装饰瓦片集---
     private Tile[] feature_tile_set = new Tile[25];
 
+    //---树木类型瓦片集---
     private Tile[] tree_like_set = new Tile[5];
 
+    //---主瓦片地图的地形信息（类型+索引）---
     private int[,,] map_info = null;
 
+    //---第二层瓦片地图的地形信息（类型+索引）---
     private int[,,] map_info2 = null;
 
 
     public Vector2 offset = new Vector2(0,0);
 
+    //---主瓦片地图层---
     public Tilemap main_tilemap = null;
+    //---第二层瓦片地图（植物/装饰层）---
     public Tilemap tilemap2 = null;
 
 	[Range(1, 30)]
@@ -44,6 +58,7 @@ public class MapGenerate : MonoBehaviour
     private float zoomVelocity = 0f;
     
 
+    //---根据气候编号初始化map_info并调用对应GenerateMap方法，初始化镜头目标缩放值---
     void Start()
     {
         Init_tileset();
@@ -73,6 +88,7 @@ public class MapGenerate : MonoBehaviour
         targetZoom = CVC.m_Lens.OrthographicSize;
     }
 
+    //---每帧响应鼠标滚轮输入，平滑调整Cinemachine正交大小以实现镜头缩放---
     void Update()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -88,6 +104,7 @@ public class MapGenerate : MonoBehaviour
             CVC.m_Lens.OrthographicSize, targetZoom, ref zoomVelocity, zoomSmoothTime);
     }
 
+    //---从Resources/Tiles加载所有瓦片集资源（土地/草地/水体/植被/树木）---
     private void Init_tileset()
     {
         
@@ -216,6 +233,7 @@ public class MapGenerate : MonoBehaviour
     }
 
 
+    //---普通草地地形生成：噪声值低→草地边缘，高→水体，中间→草地，使用随机种子---
     public void GenerateMap_1(int m_seed)
 	{
         //Init_tileset();
@@ -504,6 +522,7 @@ public class MapGenerate : MonoBehaviour
 
 	}
 
+    //---稀疏草原地形生成：噪声分层控制草地、沙地和水体分布---
     public void GenerateMap_2(int m_seed) //草原
 	{
         //Init_tileset();
@@ -792,6 +811,7 @@ public class MapGenerate : MonoBehaviour
 
 
 
+    //---雪地地形生成：噪声分层控制雪地、冰面和水体分布---
     public void GenerateMap_3(int m_seed) //雪地
 	{
         //Init_tileset();
@@ -1041,6 +1061,7 @@ public class MapGenerate : MonoBehaviour
 
 
 
+    //---沙漠地形生成：噪声分层控制沙地、绿洲和水体分布---
     public void GenerateMap_4(int m_seed) //雪地
 	{
         //Init_tileset();

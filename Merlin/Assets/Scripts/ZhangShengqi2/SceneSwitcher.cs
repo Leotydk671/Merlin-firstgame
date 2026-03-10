@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//---单按钮场景切换器：按下按钮后载入Inspector中配置的targetSceneName场景---
 public class SceneSwitcher : MonoBehaviour
 {
-    // 用于存储要跳转的目标场景的名称
+    //---目标场景名称---
     public string targetSceneName = "TransferScene"; 
-    // 关联在Unity编辑器中要操作的按钮组件
+    //---触发场景切换的按钮组件---
     public Button switchSceneButton; 
 
+    //---初始化：为switchSceneButton注册场景跳转监听---
     void Start()
     {
         // 检查按钮是否在Unity编辑器中正确赋值
@@ -24,6 +26,7 @@ public class SceneSwitcher : MonoBehaviour
         }
     }
 
+    //---加载目标场景（若targetSceneName为空则打印错误）---
     void SwitchScene()
     {
         // 检查目标场景名称是否为空

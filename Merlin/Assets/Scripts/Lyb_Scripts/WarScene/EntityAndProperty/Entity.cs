@@ -2,16 +2,15 @@ using UnityEngine;
 
 
 
+//---所有游戏实体的MonoBehaviour基类：持有EntityProperty属性组件和CharacterStatusConfig配置SO，通过Readconfig()从SO初始化属性---
 public class Entity : MonoBehaviour
 {
     // 角色属性
     public EntityProperty Status;
     // 角色具体属性
     public CharacterStatusConfig ConcreteInformation;
-    // 角色附带的图片
-    // public Image EntityBackground;
 
-
+    //---从CharacterStatusConfig ScriptableObject读取初始值并调用Status.Initialization初始化属性组件---
     protected void Readconfig()
     {
         // transform.gameObject.AddComponent<Image>();

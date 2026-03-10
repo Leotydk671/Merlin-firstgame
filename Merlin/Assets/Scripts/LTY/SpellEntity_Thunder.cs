@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//---雷元素子弹实体：高速且直接扣除血量（无考敌人法抗）---
 public class SpellEntity_Thunderbullet : SpellEntity, LogicalOperators
 {
+    //---初始化雷元素子弹属性：速度、0.2、伤害、10.0，命中直接扣血---
     public SpellEntity_Thunderbullet()
     {
         Sprite_Location = "Textures/Bullets/Thunderbullet";
@@ -27,7 +29,7 @@ public class SpellEntity_Thunderbullet : SpellEntity, LogicalOperators
     }
     //public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：直接扣除血量，不受任何法抗影响，销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

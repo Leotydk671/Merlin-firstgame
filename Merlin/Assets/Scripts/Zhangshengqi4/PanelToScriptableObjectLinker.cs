@@ -2,11 +2,13 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+//---Panel自动绑定EnemyScript SO：Start时将敌人名/说明/图片分别赋値给子对象的UI组件---
 public class PanelToScriptableObjectLinker : MonoBehaviour
 {
-    // 引用可脚本化对象
+    //---绑定的敌人信息ScriptableObject---
     public EnemyScript enemyScript;
 
+    //---初始化：将enemyScript的名称/说明/图片赋值给Panel内对应的Text和Image组件---
     void Start()
     {
         if (enemyScript != null)

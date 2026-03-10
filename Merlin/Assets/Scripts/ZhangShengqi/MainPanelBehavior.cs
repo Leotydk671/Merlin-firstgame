@@ -3,22 +3,23 @@ using UnityEngine;
 using UnityEngine.UI;
 //using UnityEngine.UIElements;
 
+//---主背包面板：显示四元素持有数量和图标，管理多个ElementPanel按钮切换展示，Setnum()验证并扣除法术元素消耗---
 public class MainPanelBehavior : MonoBehaviour
 {
-    //public Magicscript magicscript;
+    //---所有元素法术信息子面板数组---
     public ElementPanelBehavior[] Targetpanels;
+    //---面板上方四个元素图标的Image数组---
     public Image[] Upperimages = new Image[4];
-    //public Image[] Lowerimages = new Image[4];
     private TextMeshProUGUI textComponent; // 存储 Text 组件的引用
-    //public Button button;
-    //private bool myBoolVariable;
-    //public Image eleshow;
-    // Start is called before the first frame update
+    //---四元素初始持有数量（从 RandomDataBehavior.savedData 提取）---
     private int[] InitNum = new int[4];
+    //---当前剩余元素数量---
     private int[] CurrNum = new int[4];
+    //---切换ElementPanel显示的按钮数组---
     public Button[] buttons;
 
 
+    //---初始化四元素图标和数量（从RandomDataBehavior.savedData读取），为每个按钮注册面板切换监听，初始隐藏所有子面板---
     void Start()
     {
         for (int i=0; i<4; i++)
@@ -53,7 +54,7 @@ public class MainPanelBehavior : MonoBehaviour
                                  
     }
     
-    // Update is called once per frame
+    //---每帧同步显示元素数量并验证法术元素消耗是否足够---
     void Update()
     {
         //for (int i=0;i<4;i++)
@@ -63,6 +64,7 @@ public class MainPanelBehavior : MonoBehaviour
         Updatenum();
         Setnum();
     }
+    //---更新面板上方各元素数量的文本显示---
     void Updatenum()
     {
         for (int i=0; i<4; i++)
@@ -75,6 +77,7 @@ public class MainPanelBehavior : MonoBehaviour
         }    
     }
 
+    //---遍历所有ElementPanel，对HasBeenCreate的面板验证元素是否足够，足够则扣除消耗，不足则撤销HasBeenCreate---
     void Setnum()
     {
             int[] temp = new int[4];
@@ -113,6 +116,7 @@ public class MainPanelBehavior : MonoBehaviour
     InitNum[i] = temp[i];
 } 
     }
+    //---隐藏所有子面板，展示索引index对应的子面板，并重新绑定GetButton/SetButton监听---
     private void ShowPanel(int index)
     {
         HideAllPanels();
@@ -146,7 +150,7 @@ public class MainPanelBehavior : MonoBehaviour
 
     }
 
-    // 隐藏所有面板
+    //---隐藏 Targetpanels 中所有ElementPanel的GameObject---
     private void HideAllPanels()
     {
         foreach (ElementPanelBehavior panel in Targetpanels)

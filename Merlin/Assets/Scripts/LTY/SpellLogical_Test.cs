@@ -20,6 +20,7 @@ public class SpellLogical_Test : SpellLogical, LogicalOperators
 
     }
 
+    //---子弹发射时调用：将粒子系统移动到子弹位置并播放爆炸特效---
     public override void Emit(BulletBase Hanging_bullet_base)
     {
         if(Hanging_bullet_base != null)
@@ -34,6 +35,7 @@ public class SpellLogical_Test : SpellLogical, LogicalOperators
         
     }
 
+    //---子弹每帧处理：每0.1秒切换子弹的透明度实现闪烁视觉效果---
     public override void Process(BulletBase Hanging_bullet_base)
     {
         if(Hanging_bullet_base != null)
@@ -69,6 +71,7 @@ public class SpellLogical_Test : SpellLogical, LogicalOperators
         
     }
 
+    //---子弹命中时调用：在命中位置播放爆炸粒子特效---
     public override void Hit(Collider2D Colliding_bullet, BulletBase Hanging_bullet_base)
     {
         if(Hanging_bullet_base != null)
@@ -81,6 +84,7 @@ public class SpellLogical_Test : SpellLogical, LogicalOperators
         }
     }
 
+    //---法术销毁时重置闪烁计时器---
     public void Spell_Destroy()
     {
         last_time = 0;

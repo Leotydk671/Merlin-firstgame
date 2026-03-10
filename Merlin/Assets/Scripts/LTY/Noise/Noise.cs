@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+//---柏林噪声地图生成器：支持多度(octaves)/种子/偏移，输出归一化到[0,1]的二维噪声数组供地形渲染使用---
 public static class Noise 
 {
     //octaves:度
     //persistance:持久性，控制振幅
     //lacunarity: 间隙度，控制频率
 
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight,float scale, int octaves, float persistance, float lacunarity, int seed, Vector2 offset)
+    //---生成指定宽高的更层柏林噪声地图，结果归一化到[0,1]区间---
+    public static float[,] GenerateNoiseMap(int mapWidth, 
+                                            int mapHeight,
+                                            float scale, 
+                                            int octaves, 
+                                            float persistance, 
+                                            float lacunarity, 
+                                            int seed, 
+                                            Vector2 offset)
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
-        //防止除以0，除以负数
+        //防止除以0或负数
         if (scale <= 0)
         {
             scale = 0.0001f;

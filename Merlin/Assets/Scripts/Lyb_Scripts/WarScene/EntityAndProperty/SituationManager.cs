@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+//---状态图标管理：根据状态索引和剩余时间加载对应状态贴图到TargetImage，剩余时间归零时显示无状态图标---
 public class SituationManager : MonoBehaviour
 {
+    //---显示状态图标的Image组件---
     public Image TargetImage;
     public GameObject FatherEntity;
     
@@ -18,6 +20,7 @@ public class SituationManager : MonoBehaviour
         
     }
 
+    //---根据SituationIndex加载对应状态贴图；RestTime<=0时显示nothing_situation图标---
     public void UpdateSituation(int SituationIndex , float RestTime)
     {
         

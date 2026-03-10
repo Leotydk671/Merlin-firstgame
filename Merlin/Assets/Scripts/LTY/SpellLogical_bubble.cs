@@ -1,7 +1,9 @@
 using UnityEngine;
 
+//---气泡散弹逻辑修饰符：发射时肬然射出7颗副弹，每帧运动过程中子弹持续减速---
 public class SpellLogical_bubble : SpellLogical, LogicalOperators
 {
+   //---发射时：设置弹道加山和存活时间，并以随机偏移方向射出7颗副弹实现散射效果---
    public override void Emit(BulletBase bb)
     {
         Debug.Log("Logical accessful");
@@ -36,6 +38,7 @@ public class SpellLogical_bubble : SpellLogical, LogicalOperators
 
 
 
+    //---每帧处理：子弹每帧微幅减速，模拟气泡在空中慢慢飘荡并硬化的功能---
     public override void Process(BulletBase bb)
     {
         if(bb is EntityBullet eb)

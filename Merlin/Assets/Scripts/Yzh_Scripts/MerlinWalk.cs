@@ -2,38 +2,40 @@ using UnityEngine;
 using UnityEngine.SceneManagement; // 引入场景管理命名空间
 using TMPro;
 
+//---玩家控制器（Merlin）：继承Entity，WASD移动+Shift冲刺，有边界限制，死亡时播放动画后跳转ExitScene，统计并显示剩余敌人数量---
 public class PlayerController : Entity
 {   
+    //---全局唯一玩家实例，供所有敌人访问攻击目标---
     //所有敌人共同攻击同一个Merlin，同时记录剩余敌人数量
     public static PlayerController EntityMerlin = null;
+    //---显示剩余敌人数量的TMP文本组件---
     public TMP_Text RecordEnemy = null;
+    //---当前剩余敌人数量---
     private int RemainingEnemy;
     
-    //public GameObject respawnPrefab; // 关联的Prefab（通常是自己）
-    //public float respawnDelay = 3f;  // 复活延迟时间
-
     // 初始状态保存
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     
-    // 共同受到一个控制
-    //public GameManagerBehavior Controller;
-    
     // 移动参数
+    //---普通移动速度---
     public float normalSpeed = 5f;
-    //private bool IsMoving = true;
+    //---询问离开地图的UI对象---
     public GameObject AskNewMap;
 
+    //---冲刺移动速度---
     public float sprintSpeed = 10f;
     [Range(0.1f, 1f)] 
+    //---冲刺时速度过渡平滑度---
     public float sprintSmoothness = 0.5f;
 
-    // 攻击参数
+    // 攻击参数（暂未使用）
     public float attackRange = 1.2f;
     public float attackWidth = 0.8f;
     public LayerMask attackLayerMask;
 
     // 死亡参数
+    //---死亡动画持续时间---
     public float deathAnimDuration = 1.5f;
 
     // 组件引用
@@ -58,11 +60,13 @@ public class PlayerController : Entity
     private const string DeathDirX = "DeathDirX";
     private const string DeathDirY = "DeathDirY";
 
+    //---Awake中设置全局EntityMerlin单例---
     void Awake()
     {
         EntityMerlin = this;
     }
 
+    //---初始化：读取配置、保存初始状态、获取组件引用、初始化动画参数和剩余敌人数量---
     void Start()
     {
         Readconfig();
@@ -93,6 +97,7 @@ public class PlayerController : Entity
 
     }
 
+    //---每帧：同步速度属性、更新属性、处理移动输入、更新动画、处理状态效果和死亡判断---
     private void Update()
     {
         //if (Input.GetKeyDown(KeyCode.Tab))
@@ -129,6 +134,7 @@ public class PlayerController : Entity
             AskNewMap.SetActive(false);
     }
 
+    //---读取WASD输入，检查地图边界，支持Shift冲刺，Lerp平滑过渡速度---
     void HandleMovementInput()
     {
         float horizontal = 0f;
@@ -227,6 +233,7 @@ public class PlayerController : Entity
     }
     */
 
+    //---死亡处理：标记死亡、播放死亡动画、禁用物理和碰撞，延迟后重新加载场景并跳转ExitScene---
     public void Die()
     {
         if (isDead) return;
@@ -333,6 +340,7 @@ public class PlayerController : Entity
         }
     }
 
+    //---处理状态效果持续伤害（Burn每帧扣0.5血/s，Toxic每帧扣5%最大血量/s）---
     private void PropertyChange()
     {
         switch (Status.CurrentSituation.Item1)
@@ -352,6 +360,7 @@ public class PlayerController : Entity
         }
     }
 
+    //---碰撞检测：根据攻击弹标签扣减对应元素法抗后的伤害，并施加对应状态效果---
     // Been Attacked
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -428,6 +437,7 @@ public class PlayerController : Entity
         }
     }
 
+    //---敌人死亡时调用，减少剩余敌人计数，归零时通知GlobalManager进入安全状态---
     public void OneLessEnemy()
     {
         RemainingEnemy--;

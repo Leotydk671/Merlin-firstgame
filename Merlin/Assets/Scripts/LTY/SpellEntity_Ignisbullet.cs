@@ -1,7 +1,9 @@
 using UnityEngine;
 
+//---火元素子弹实体：速度较慢但高伤害，命中后对敌人施加灬烧状态---
 public class SpellEntity_Ignisbullet : SpellEntity, LogicalOperators
 {
+    //---初始化火元素子弹属性：贴图路径、速度、0.09、伤害、10.0---
     public SpellEntity_Ignisbullet()
     {
         Sprite_Location = "Textures/Bullets/Ignisbullet";
@@ -25,7 +27,7 @@ public class SpellEntity_Ignisbullet : SpellEntity, LogicalOperators
     }
     //public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：根据敌人火元素抗性计算实际伤害，并设置灬烧异常状态，最后销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

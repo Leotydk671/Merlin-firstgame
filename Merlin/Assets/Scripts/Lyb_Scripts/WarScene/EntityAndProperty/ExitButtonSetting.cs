@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//---退出按钮设置：提供PauseAndExit()方法，调用Application.Quit()退出游戏---
 public class ExitButtonSetting : MonoBehaviour
 {
     // Start is called before the first frame update

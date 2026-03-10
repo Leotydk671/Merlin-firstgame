@@ -1,7 +1,9 @@
 using UnityEngine;
 
+//---强化水元素子弹：比普通水弹伤害更高，并且冰冻减速效果て70%---
 public class SpellEntity_AquabulletPlus : SpellEntity, LogicalOperators
 {
+    //---初始化强化水元素子弹属性：速度、0.15、伤害、10.0---
     public SpellEntity_AquabulletPlus()
     {
         Sprite_Location = "Textures/Bullets/AquabulletPlus";
@@ -25,7 +27,7 @@ public class SpellEntity_AquabulletPlus : SpellEntity, LogicalOperators
     }
     public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：根据水法抗计算伤害，无状态时施加冰冻并降速30%（比普通版减速更强），销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

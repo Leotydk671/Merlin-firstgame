@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 
+//---强化风元素子弹：发射后散射范围极大，存活时间长，并且小幅逐帧减速，不销毁子弹实现持续伤害---
 public class SpellEntity_AerbulletPlus : SpellEntity, LogicalOperators
 {
+    //---初始化强化风元素子弹属性：速度、0.1、伤害、7.0---
     public SpellEntity_AerbulletPlus()
     {
         Sprite_Location = "Textures/Bullets/AerbulletPlus";
@@ -26,6 +28,7 @@ public class SpellEntity_AerbulletPlus : SpellEntity, LogicalOperators
     }
     //public byte Element_type = 1<<1; //Aqua
 
+    //---发射时：将间隔时间设为1.2秒，将子弹的山顺散射参数增大到5.0并延长存活时间---
     public override void Emit(BulletBase bb)
     {
         intervaltime = 1.2f;
@@ -40,6 +43,7 @@ public class SpellEntity_AerbulletPlus : SpellEntity, LogicalOperators
         }
     }
 
+    //---每帧处理：小幅减速，模拟散弹在空中慢慢扩散---
     public override void Process(BulletBase bb)
     {
         if(bb is EntityBullet eb)
@@ -48,6 +52,7 @@ public class SpellEntity_AerbulletPlus : SpellEntity, LogicalOperators
         }
     }
 
+    //---命中逻辑：根据敌人风法抗计算伤害，不销毁子弹（实现持续/流弹伤害）---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

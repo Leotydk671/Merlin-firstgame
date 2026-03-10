@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//---强化火元素子弹：比普通火弹速度更快、伤害略高，同样施加灬烧状态---
 public class SpellEntity_IgnisbulletPlus : SpellEntity, LogicalOperators
 {
+    //---初始化强化火元素子弹属性：速度、0.15、伤害、12.0---
     public SpellEntity_IgnisbulletPlus()
     {
         Sprite_Location = "Textures/Bullets/IgnisbulletPlus";
@@ -27,7 +29,7 @@ public class SpellEntity_IgnisbulletPlus : SpellEntity, LogicalOperators
     }
     //public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：根据火法抗计算伤害，设置灬烧状态，销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("Fuck!");

@@ -3,9 +3,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+//---开始场景按钮：游戏启动后2秒内按钮逐渐淡入显示，淡入完成后才可点击，点击后跳转ChooseScene---
 public class ButtonSetting : MonoBehaviour
 {
+    //---目标跳转场景名---
     private string sceneName = "ChooseScene"; // 目标场景名称
+    //---淡入总时间（秒）---
     public float fadeDuration = 2f; // 渐变总时间（2秒）
 
     private Button button; // 按钮组件引用
@@ -14,6 +17,7 @@ public class ButtonSetting : MonoBehaviour
     private float elapsedTime; // 已经过的时间
     private bool isFading = false; // 是否正在渐变
 
+    //---初始化组件引用，禁用按钮并开始淡入动画---
     private void Start()
     {
         // 获取按钮组件
@@ -28,6 +32,7 @@ public class ButtonSetting : MonoBehaviour
         isFading = true;
     }
 
+    //---每帧更新按钮和文字的Alpha值实现淡入，时间到达后启用按钮交互---
     private void Update()
     {
         if (isFading)
@@ -57,6 +62,7 @@ public class ButtonSetting : MonoBehaviour
         }
     }
 
+    //---按钮点击事件：调用SceneManager跳转到ChooseScene---
     // 按钮点击事件：加载场景
     public void LoadScene()
     {

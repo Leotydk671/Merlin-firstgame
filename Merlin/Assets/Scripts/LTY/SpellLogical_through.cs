@@ -1,7 +1,9 @@
 using UnityEngine;
 
+//---穿透逻辑修饰符：子弹可多次穿透敌人，发射时将碰撞次数加一---
 public class SpellLogical_through : SpellLogical, LogicalOperators
 {
+    //---发射时：将BulletBase的collidetime加一，实现多次穿透效果---
     public override void Emit(BulletBase bb)
     {
         bb.collidetime++;

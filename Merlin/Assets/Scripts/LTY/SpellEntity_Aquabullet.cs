@@ -1,7 +1,9 @@
 using UnityEngine;
 
+//---水元素子弹实体：速度中等、伤害中等，命中后对敌人施加冰冻并降低移动速度---
 public class SpellEntity_Aquabullet : SpellEntity, LogicalOperators
 {
+    //---初始化水元素子弹属性：速度、0.12、伤害、7.0---
     public SpellEntity_Aquabullet()
     {
         Sprite_Location = "Textures/Bullets/Aquabullet";
@@ -25,7 +27,7 @@ public class SpellEntity_Aquabullet : SpellEntity, LogicalOperators
     }
     public byte Element_type = 1<<1; //Aqua
 
-
+    //---命中逻辑：根据水元素抗性计算伤害，无状态时施加冰冻并降速50%，销毁子弹---
     public override void Hit(Collider2D Colliding_bullet, BulletBase bb)
     {
         Debug.Log("FFFFFF!");

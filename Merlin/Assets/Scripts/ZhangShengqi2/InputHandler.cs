@@ -3,22 +3,24 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//---整数种子输入处理器：读取用户输入的整数种子，调用SetNewWorld设定全局种子并载入LeadScene---
 public class IntegerInputHandler : MonoBehaviour
 {
     // 引用输入字段
     public TMP_InputField inputField;
     // 引用按钮
     public Button submitButton;
-    // 用于保存用户输入的整数
+    //---用户输入的整数种子（静态共享）---
     public static int userInputInteger;
-    //private string targetSceneName = "WarScene";
 
+    //---初始化：注册提交按钮监听---
     void Start()
     {
         // 为按钮的点击事件添加监听
         submitButton.onClick.AddListener(OnSubmitButtonClicked);
     }
 
+    //---提交按钮回调：解析输入整数作为种子，无效则随机种子，设置后载入LeadScene---
     void OnSubmitButtonClicked()
     {
         // 获取输入字段的文本

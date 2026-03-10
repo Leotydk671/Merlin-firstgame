@@ -1,28 +1,37 @@
 using System;
 using UnityEngine;
 
+//---子弹管理单例：负责管理当前法术配置，存储修饰符类型和主弹实体，接收鼠标点击输入并实例化子弹---
 public class TestBulletManager : MonoBehaviour
 {
+    //---整个游戏全局唯一实例---
     public static TestBulletManager TBM = null;
 
+    //---玩家角色游戏对象---
     public GameObject Merlin_entity = null;
 
+    //---当前配置的修饰符类型数组，最多5个---
     Type[] operators_type = new Type[5];
 
     //LogicalOperators[] operators = null;
 
+    //---当前选择的主弹实体类---
     SpellEntity main_bullet_entity = null;
 
+    //---当前配置的修饰符数量---
     public int extension_num = 0;
 
     //private int global_bullet = 1; 
     public int count = 0;
 
+    //---上次发射的全局时间戳，用于控制攻击间隔---
     // 初始攻击时间
     public static float last_bullet_time = 0;
 
+    //---攻击间隔时间，单位秒---
     public float AttackEnemyTime = 0f;
 
+    //---将修饰符类型数组通过反射实例化为LogicalOperators数组，同时输出主弹实体类---
     public int setoperators(ref LogicalOperators[] operators_, ref SpellEntity main_bullet_entity_)
     {
         main_bullet_entity_ = main_bullet_entity;
@@ -55,6 +64,7 @@ public class TestBulletManager : MonoBehaviour
     }
 
 
+    //---遍历UI法术槽格子，读取选中的子弹实体类型和修饰符类型---
     public void sequence_set(GameObject []boxes, int num)
     {
         int index = 0;
@@ -78,6 +88,7 @@ public class TestBulletManager : MonoBehaviour
         }
     }
 
+    //---初始化单例，设置全局TBM引用---
     void Awake()
     {
         TBM = this;
@@ -103,6 +114,7 @@ public class TestBulletManager : MonoBehaviour
 
 
 
+    //---每帧监听左键点击，在IsMoving状态下将鼠标位置作为目标创建新子弹---
     // Update is called once per frame
     void Update()
     {
@@ -151,6 +163,7 @@ public class TestBulletManager : MonoBehaviour
     }
 
 
+    //---从玩家位置创建新子弹，方向指向目标位置，copy=false表示原始子弹---
     public void CreateANewBullet(Vector3 targetpos)
     {
         Debug.Log("OOOOOOOOOOOOOO");
@@ -172,6 +185,7 @@ public class TestBulletManager : MonoBehaviour
         else Debug.Log("Good");        
     }
 
+    //---从指定位置创建副弹，copy=true表示该子弹是由修饰符拼接层创建的副代子弹---
     public void CreateANewBullet2(Vector3 targetpos, Vector3 pos)
     {
         /*Vector3 pos = Merlin_entity.transform.position;

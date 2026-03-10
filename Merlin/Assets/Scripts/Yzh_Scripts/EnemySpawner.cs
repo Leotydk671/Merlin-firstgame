@@ -1,14 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
+//---敌人生成器：从Resources加载预制体，按固定间隔在区域内随机生成指定数量的敌人，生成位置需与玩家保持最小距离---
 public class EnemySpawner : MonoBehaviour
 {
     [Header("生成设置")]
+    //---Resources文件夹下的预制体路径---
     public string prefabPath = "Enemies/BaseEnemy"; // Resources文件夹下的路径
+    //---生成区域中心---
     public Vector2 spawnAreaCenter;
+    //---生成区域大小---
     public Vector2 spawnAreaSize = new Vector2(20, 20);
+    //---总共生成的敌人数量---
     public int totalEnemies = 10;
+    //---每次生成间隔时间（秒）---
     public float spawnInterval = 3f;
+    //---与玩家的最小安全距离---
     public float minDistanceFromPlayer = 5f;
 
     [Header("调试视图")]
@@ -23,12 +30,14 @@ public class EnemySpawner : MonoBehaviour
     private int spawnedCount;
 
 
+    //---加载预制体资源并启动生成协程---
     void Start()
     {
         LoadEnemyPrefab();
         StartCoroutine(SpawnRoutine());
     }
 
+    //---从Resources路径加载敌人预制体，路径无效时禁用自身---
     void LoadEnemyPrefab()
     {
         // 从Resources文件夹加载预制体
@@ -48,6 +57,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    //---协程：每隔spawnInterval秒生成一个敌人，达到totalEnemies后停止---
     IEnumerator SpawnRoutine()
     {
         while(spawnedCount < totalEnemies)
